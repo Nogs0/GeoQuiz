@@ -5,13 +5,13 @@
     <string name="toast_correto">Correto!</string>
     <string name="toast_incorreto">Incorreto!</string>
     <string name="toast_julgamento">Não vale, você colou!</string>
-    <string name="botao_proximo">Proximo</string>
-
+    <string name="botao_proximo">Próxima Pergunta</string>
+    <string name="texto_pontuacao">Ponutação atual: </string>
     <string name="texto_advertencia">Tem certeza que quer ver a resposta?</string>
     <string name="botao_mostra_reposta">Mostra resposta</string>
-    <string name="botao_cola">Colar!</string>
+    <string name="botao_cola">Colar</string>
     <string name="texto_avaliacao">Cola está incorreta. </string>
-
+    <string name="acabou">O jogo acabou, as respostas e a pontuação serão resetadas!</string>
     <string name="texto_padrao_mostra_questoes"> Nenhuma questão a apresentar </string>
     <string name="texto_do_artigo">
         E agora, José? \n

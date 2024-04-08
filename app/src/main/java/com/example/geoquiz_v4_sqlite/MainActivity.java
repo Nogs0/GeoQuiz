@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 /*
   Modelo de projeto para a Atividade 1.
   Será preciso adicionar o cadastro das respostas do usuário ao Quiz, conforme
@@ -32,21 +34,43 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextViewQuestao;
     private TextView mTextViewRespostasArmazenadas;
 
+    private TextView mTextViewTextoPontuacao;
+    private TextView mTextViewPontuacao;
+
     private static final String TAG = "QuizActivity";
     private static final String CHAVE_INDICE = "INDICE";
     private static final int CODIGO_REQUISICAO_COLA = 0;
 
-    private Questao[] mBancoDeQuestoes = new Questao[]{
+    public int pontuacaoAtual = 0;
+    private final Questao[] mBancoDeQuestoes = new Questao[]{
             new Questao("Palmeiras tem mundial?", false),
             new Questao("O nome real do Boca é João Boca?", false),
-            new Questao("A capital da Alemanha é Berlim?", true)
+            new Questao("O relâmpago é visto antes de ser ouvido porque a luz viaja mais rápido que o som.", true),
+            new Questao("A Cidade do Vaticano é um país.", true),
+            new Questao("Melbourne é a capital da Austrália", false),
+            new Questao("A penicilina foi descoberta no Vietnã para tratar a malária.", false),
+            new Questao("O Monte Fuji é a montanha mais alta do Japão.", true),
+            new Questao("Brócolis contém mais vitamina C do que limões.", true),
+            new Questao("O crânio é o osso mais forte do corpo humano.", false),
+            new Questao("O Google foi inicialmente chamado de BackRub.", true),
+            new Questao("A caixa preta em um avião é preta.", false),
+            new Questao("Tomates são frutas.", true),
+            new Questao("A atmosfera de Mercúrio é composta de dióxido de carbono.", false),
+            new Questao("A depressão é a principal causa de incapacidade em todo o mundo.", true),
+            new Questao("Cleópatra era descendente de egípcios.", false),
+            new Questao("Você pode espirrar enquanto dorme.", false),
+            new Questao("É impossível espirrar enquanto você abre os olhos.", true),
+            new Questao("Bananas são bagas.", true),
+            new Questao("Se você somar os dois números dos lados opostos dos dados, a resposta será sempre 7", true),
+            new Questao("As vieiras não podem ver", false),
+            new Questao("A construção da Torre Eiffel foi concluída em 31 de março de 1887", false)
     };
 
     QuestaoDB mQuestoesDb;
 
     RespostaDB mRespostasDb;
 
-    private int mIndiceAtual = 0;
+    private Integer mIndiceAtual = 0;
 
     private boolean mEhColador;
 
@@ -69,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
         for (Questao questao : mBancoDeQuestoes) {
             mQuestoesDb.addQuestao(questao);
         }
+
+        mTextViewTextoPontuacao = (TextView) findViewById(R.id.view_texto_pontuacao);
+        mTextViewTextoPontuacao.setText(R.string.texto_pontuacao);
+        mTextViewPontuacao = (TextView) findViewById(R.id.view_pontuacao);
+        atualizaPontuacao();
 
         mTextViewQuestao = (TextView) findViewById(R.id.view_texto_da_questao);
         atualizaQuestao();
@@ -93,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
         mBotaoProximo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mIndiceAtual = (mIndiceAtual + 1) % mBancoDeQuestoes.length;
                 mEhColador = false;
                 atualizaQuestao();
             }
@@ -144,9 +172,10 @@ public class MainActivity extends AppCompatActivity {
                                 Questao questao = Mapper.mapQuestao(cursorQuestao);
 
                                 mTextViewRespostasArmazenadas.append("\n Questão: " + questao.getTexto());
+                                mTextViewRespostasArmazenadas.append("\n Colador: " + (resposta.isColou() ? "Sim" : "Não"));
                                 mTextViewRespostasArmazenadas.append("\n Resposta Correta: " + (questao.isRespostaCorreta() ? "Verdadeiro" : "Falso"));
                                 mTextViewRespostasArmazenadas.append("\n Resposta oferecida: " + (resposta.getRespostaOferecida() ? "Verdadeiro" : "Falso"));
-                                mTextViewRespostasArmazenadas.append("\n-------------------------------------------------------");
+                                mTextViewRespostasArmazenadas.append("\n-----------------------------------------------------------------------------------------------------------");
                             } finally {
                                 cursorQuestao.close();
                             }
@@ -168,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 */
                 if (mRespostasDb != null) {
                     mRespostasDb.removeRespostas();
+                    atualizaPontuacao();
                     if (mTextViewRespostasArmazenadas == null) {
                         mTextViewRespostasArmazenadas = (TextView) findViewById(R.id.texto_respostas_a_apresentar);
                     }
@@ -179,27 +209,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void atualizaQuestao() {
+        if (mIndiceAtual == mBancoDeQuestoes.length - 1){
+            mRespostasDb.removeRespostas();
+            mIndiceAtual = 0;
+            Intent intent = new Intent(MainActivity.this, FinalActivity.class);
+            startActivity(intent);
+        }
+        else
+            mIndiceAtual = (mIndiceAtual + 1) % mBancoDeQuestoes.length;
         Questao questao = mBancoDeQuestoes[mIndiceAtual];
         mTextViewQuestao.setText(questao.getTexto());
     }
 
     private void verificaResposta(boolean respostaPressionada) {
         boolean respostaCorreta = mBancoDeQuestoes[mIndiceAtual].isRespostaCorreta();
-        int idMensagemResposta = 0;
 
         if (mEhColador) {
-            idMensagemResposta = R.string.toast_julgamento;
+            Toast.makeText(this, R.string.toast_julgamento, Toast.LENGTH_SHORT).show();
             mRespostasDb.addResposta(new Resposta(respostaCorreta, false, true, mBancoDeQuestoes[mIndiceAtual].getId()));
-        } else {
-            if (respostaPressionada == respostaCorreta) {
-                idMensagemResposta = R.string.toast_correto;
-                mRespostasDb.addResposta(new Resposta(true, respostaPressionada, false, mBancoDeQuestoes[mIndiceAtual].getId()));
-            } else {
-                idMensagemResposta = R.string.toast_incorreto;
-                mRespostasDb.addResposta(new Resposta(false, respostaPressionada, false, mBancoDeQuestoes[mIndiceAtual].getId()));
-            }
+        } else
+            mRespostasDb.addResposta(new Resposta(respostaPressionada == respostaCorreta, respostaPressionada, false, mBancoDeQuestoes[mIndiceAtual].getId()));
+        atualizaQuestao();
+        atualizaPontuacao();
+    }
+
+    private void atualizaPontuacao() {
+        if (mRespostasDb != null) {
+            Cursor cursorResposta = mRespostasDb.queryResposta("resposta_correta = 1", null);
+            pontuacaoAtual = cursorResposta.getCount();
+
+            mTextViewPontuacao.setText(String.valueOf(pontuacaoAtual));
         }
-        Toast.makeText(this, idMensagemResposta, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -211,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int codigoRequisicao, int codigoResultado, Intent dados) {
+        super.onActivityResult(codigoRequisicao, codigoResultado, dados);
         if (codigoResultado != Activity.RESULT_OK) {
             return;
         }

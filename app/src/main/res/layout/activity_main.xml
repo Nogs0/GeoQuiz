@@ -7,20 +7,41 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@color/purple_700">
+
+        <TextView
+            android:id="@+id/view_texto_pontuacao"
+            android:layout_width="206dp"
+            android:layout_height="80dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/view_pontuacao"
+            android:layout_width="206dp"
+            android:layout_height="80dp"
+            android:gravity="center" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/view_texto_da_questao"
-        android:layout_width="379dp"
-        android:layout_height="wrap_content"
+        android:layout_width="400dp"
+        android:layout_height="260dp"
         android:gravity="center"
-        android:padding="24dp" />
-
+        android:padding="24dp"
+        tools:layout_editor_absoluteX="6dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="93dp">
 
         <Button
+            android:backgroundTint="@color/purple_700"
             android:id="@+id/botao_verdadeiro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,6 +49,7 @@
             android:text="@string/botao_verdadeiro" />
 
         <Button
+            android:backgroundTint="@color/purple_700"
             android:id="@+id/botao_falso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,18 +58,22 @@
     </LinearLayout>
 
     <Button
+        android:backgroundTint="@color/purple_700"
         android:id="@+id/botao_cola"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/botao_cola" />
+        android:text="@string/botao_cola"
+        tools:layout_editor_absoluteX="162dp" />
 
     <Button
+        android:backgroundTint="@color/purple_700"
         android:id="@+id/botao_proximo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/arrow_right"
         android:drawablePadding="4dp"
-        android:text="@string/botao_proximo" />
+        android:text="@string/botao_proximo"
+        tools:layout_editor_absoluteX="100dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,32 +81,38 @@
         android:orientation="horizontal">
 
         <Button
+            android:backgroundTint="@color/purple_700"
             android:id="@+id/botao_mostra_questoes"
             android:layout_width="208dp"
             android:layout_height="wrap_content"
+            android:insetLeft="10dp"
+            android:insetRight="10dp"
             android:text="Mostra" />
 
         <Button
+            android:backgroundTint="@color/purple_700"
             android:id="@+id/botao_deleta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:insetLeft="10dp"
+            android:insetRight="10dp"
             android:text="Deleta" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_scrolavel">
+        android:layout_height="200dp"
+        android:layout_below="@+id/view_scrolavel"
+        tools:layout_editor_absoluteX="98dp">
 
         <TextView
             android:id="@+id/texto_respostas_a_apresentar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:autoLink="web"
 
             android:lineSpacingExtra="@dimen/espaco_de_linhas"
-            android:padding="@dimen/padding_regular"
-            android:text="@string/texto_padrao_mostra_questoes" />
+            android:padding="@dimen/padding_regular"/>
     </ScrollView>
 
 </LinearLayout>

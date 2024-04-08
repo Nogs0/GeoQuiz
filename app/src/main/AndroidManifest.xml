@@ -13,6 +13,9 @@
             android:name="com.example.geoquiz_v4_sqlite.ColaActivity"
             android:exported="true" />
         <activity
+            android:name="com.example.geoquiz_v4_sqlite.FinalActivity"
+            android:exported="true" />
+        <activity
             android:name="com.example.geoquiz_v4_sqlite.MainActivity"
             android:exported="true">
             <intent-filter>
