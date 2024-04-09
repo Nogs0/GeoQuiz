@@ -14,6 +14,8 @@ public class QuestoesDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + QuestoesDbSchema.QuestoesTbl.NOME);
+        db.execSQL("DROP TABLE IF EXISTS " + QuestoesDbSchema.RespostasTbl.NOME);
         db.execSQL("CREATE TABLE " + QuestoesDbSchema.QuestoesTbl.NOME + "(" +
                 "_id integer PRIMARY KEY autoincrement, " +
                 QuestoesDbSchema.QuestoesTbl.Cols.UUID + ", " +
@@ -31,9 +33,6 @@ public class QuestoesDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int versaoAntiga, int novaVersao) {
-        // Política de upgrade é simplesmente descartar o conteúdo e começar novamente
-        db.execSQL("DROP TABLE IF EXISTS " + QuestoesDbSchema.QuestoesTbl.NOME);
-        db.execSQL("DROP TABLE IF EXISTS " + QuestoesDbSchema.RespostasTbl.NOME);
         onCreate(db);
     }
 }
