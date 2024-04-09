@@ -18,7 +18,7 @@ public class QuestoesDBHelper extends SQLiteOpenHelper {
                 "_id integer PRIMARY KEY autoincrement, " +
                 QuestoesDbSchema.QuestoesTbl.Cols.UUID + ", " +
                 QuestoesDbSchema.QuestoesTbl.Cols.QUESTAO_CORRETA + " integer, " +
-                QuestoesDbSchema.QuestoesTbl.Cols.TEXTO_QUESTAO + " text)");
+                QuestoesDbSchema.QuestoesTbl.Cols.TEXTO_QUESTAO + ")");
 
         db.execSQL("CREATE TABLE " + QuestoesDbSchema.RespostasTbl.NOME + "(" +
                 "_id integer PRIMARY KEY autoincrement, " +
@@ -26,7 +26,7 @@ public class QuestoesDBHelper extends SQLiteOpenHelper {
                 QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_CORRETA + " integer, " +
                 QuestoesDbSchema.RespostasTbl.Cols.RESPOSTA_OFERECIDA + " integer, " +
                 QuestoesDbSchema.RespostasTbl.Cols.COLOU + " integer, " +
-                QuestoesDbSchema.RespostasTbl.Cols.QUESTAO_UUID);
+                QuestoesDbSchema.RespostasTbl.Cols.QUESTAO_UUID + ")");
     }
 
     @Override
