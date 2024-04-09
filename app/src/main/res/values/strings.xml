@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GeoQuiz V4 - SQLite</string>
+    <string name="app_name">GeoQuiz!</string>
     <string name="botao_verdadeiro">Verdadeiro</string>
     <string name="botao_falso">Falso</string>
     <string name="toast_correto">Correto!</string>
