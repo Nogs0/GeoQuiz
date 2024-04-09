@@ -227,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         if (mEhColador) {
             Toast.makeText(this, R.string.toast_julgamento, Toast.LENGTH_SHORT).show();
             mRespostasDb.addResposta(new Resposta(respostaCorreta, false, true, mBancoDeQuestoes[mIndiceAtual].getId()));
+            mEhColador = false;
         } else
             mRespostasDb.addResposta(new Resposta(respostaPressionada == respostaCorreta, respostaPressionada, false, mBancoDeQuestoes[mIndiceAtual].getId()));
         atualizaQuestao();
