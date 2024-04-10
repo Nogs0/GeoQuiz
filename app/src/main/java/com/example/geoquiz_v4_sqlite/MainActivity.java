@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                                 mTextViewRespostasArmazenadas.append("\n Colador: " + (resposta.isColou() ? "Sim" : "Não"));
                                 mTextViewRespostasArmazenadas.append("\n Resposta Correta: " + (questao.isRespostaCorreta() ? "Verdadeiro" : "Falso"));
                                 mTextViewRespostasArmazenadas.append("\n Resposta oferecida: " + (resposta.getRespostaOferecida() ? "Verdadeiro" : "Falso"));
-                                mTextViewRespostasArmazenadas.append("\n-----------------------------------------------------------------------------------------------------------");
+                                mTextViewRespostasArmazenadas.append("\n------------------------------------------------------------------------------");
                             } finally {
                                 cursorQuestao.close();
                             }
@@ -209,13 +209,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void atualizaQuestao() {
-        if (mIndiceAtual == mBancoDeQuestoes.length - 1){
+        if (mIndiceAtual == mBancoDeQuestoes.length - 1) {
             mRespostasDb.removeRespostas();
             mIndiceAtual = 0;
             Intent intent = new Intent(MainActivity.this, FinalActivity.class);
             startActivity(intent);
-        }
-        else
+        } else
             mIndiceAtual = (mIndiceAtual + 1) % mBancoDeQuestoes.length;
         Questao questao = mBancoDeQuestoes[mIndiceAtual];
         mTextViewQuestao.setText(questao.getTexto());
@@ -224,19 +223,28 @@ public class MainActivity extends AppCompatActivity {
     private void verificaResposta(boolean respostaPressionada) {
         boolean respostaCorreta = mBancoDeQuestoes[mIndiceAtual].isRespostaCorreta();
 
+        if (mTextViewQuestao.getText() == "Correto!" || mTextViewQuestao.getText() == "Incorreto!" || mTextViewQuestao.getText() == "Você deve avançar para a próxima pergunta!"){
+            mTextViewQuestao.setText("Você deve avançar para a próxima pergunta!");
+            return;
+        }
+
         if (mEhColador) {
-            Toast.makeText(this, R.string.toast_julgamento, Toast.LENGTH_SHORT).show();
+            mTextViewQuestao.setText("Não vale! Você colou!");
             mRespostasDb.addResposta(new Resposta(respostaCorreta, false, true, mBancoDeQuestoes[mIndiceAtual].getId()));
             mEhColador = false;
-        } else
+        } else {
+            if (respostaPressionada == respostaCorreta)
+                mTextViewQuestao.setText("Correto!");
+            else mTextViewQuestao.setText("Incorreto!");
+
             mRespostasDb.addResposta(new Resposta(respostaPressionada == respostaCorreta, respostaPressionada, false, mBancoDeQuestoes[mIndiceAtual].getId()));
-        atualizaQuestao();
-        atualizaPontuacao();
+            atualizaPontuacao();
+        }
     }
 
     private void atualizaPontuacao() {
         if (mRespostasDb != null) {
-            Cursor cursorResposta = mRespostasDb.queryResposta("resposta_correta = 1", null);
+            Cursor cursorResposta = mRespostasDb.queryResposta("resposta_correta = 1 and colou = 0", null);
             pontuacaoAtual = cursorResposta.getCount();
 
             mTextViewPontuacao.setText(String.valueOf(pontuacaoAtual));

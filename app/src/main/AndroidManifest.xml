@@ -11,13 +11,16 @@
         android:theme="@style/Theme.GeoQuiz">
         <activity
             android:name="com.example.geoquiz_v4_sqlite.ColaActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.example.geoquiz_v4_sqlite.FinalActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.example.geoquiz_v4_sqlite.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
