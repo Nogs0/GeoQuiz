@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
     private void verificaResposta(boolean respostaPressionada) {
         boolean respostaCorreta = mBancoDeQuestoes[mIndiceAtual].isRespostaCorreta();
 
-        if (mTextViewQuestao.getText() == "Correto!" || mTextViewQuestao.getText() == "Incorreto!" || mTextViewQuestao.getText() == "Você deve avançar para a próxima pergunta!"){
+        if (mTextViewQuestao.getText() == "Correto!" || mTextViewQuestao.getText() == "Incorreto!" || mTextViewQuestao.getText() == "Você deve avançar para a próxima pergunta!" || mTextViewQuestao.getText() == "Não vale! Você colou!"){
             mTextViewQuestao.setText("Você deve avançar para a próxima pergunta!");
             return;
         }
